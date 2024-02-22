@@ -1,10 +1,15 @@
 import subprocess
+import sys
 
 def execute_c_program():
+
+    # download file from S3 Bucket
+    # https://docs.aws.amazon.com/AmazonS3/latest/userguide/download-objects.html
+    file = sys.argv[1]
+
     try:
-        # Replace 'your_program' with the name of your compiled C program
-        # You may also need to provide the path if the program is not in the same directory
-        process = subprocess.Popen('./your_program', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # execute compiled program
+        process = subprocess.Popen('./' + file, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
 
         # Check if there was any output to stdout
