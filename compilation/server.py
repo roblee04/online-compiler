@@ -2,6 +2,8 @@ from flask import Flask, jsonify, request, abort
 import subprocess
 import sys
 import json
+import hashlib
+import os
 
 # curl -X POST -H "Content-Type: application/json" -d '{"name": "John", "age": 30}' http://localhost:5000/
 # example req
@@ -23,8 +25,14 @@ def post_data():
     data_str = data.decode('utf-8')
     print(data_str)
 
-    # save string as file
-    file_name = "test.c"
+    extension = ".c"
+
+    # hash contents
+    sha256_hash = hashlib.sha256(data_str.encode()).hexdigest()
+
+    # save string as c file
+    file_name = sha256_hash + extension
+    print(file_name)
     with open(file_name, 'w', encoding='utf-8') as file:
         file.write(data_str)
 
@@ -33,9 +41,10 @@ def post_data():
 
     # compile code
     # docker exec -it container_id /path/in/container/compile.sh input_file.c
+
     compiler = 'gcc'
     subprocess.run(['sh','compile.sh', compiler, file_name])
-
+    
 
     if data is not None:
         return jsonify({'message': f'Received file: {data_str}'})
@@ -46,18 +55,8 @@ def post_data():
     
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
-
-def compile_program():
-
-    file = sys.argv[1]
-    with open(file) as f: string = f.read()
-
-    try:
-        # Replace 'your_program.c' with the name of your C source file
-        # Replace 'your_program' with the desired name of the executable
-        subprocess.run(['clang', file, '-o', file], check=True)
-        print("C program compiled successfully.")
-    except subprocess.CalledProcessError as e:
-        print("Error: Compilation failed with return code:", e.returncode)
+    # app.run(debug=True)
+    # set IPV4 as an environment variable..
+    # export IPV4="YOUR_IP_ADDR"
+    ip_addr = os.getenv("IPV4")
+    app.run(host=ip_addr, port=9000)

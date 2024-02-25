@@ -14,3 +14,5 @@ file_name=$2
 # Compile the file using the selected compiler
 $compiler $file_name -o ${file_name%.*}
 
+# also store into S3
+cp ${file_name%.*} ../execution
