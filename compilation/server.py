@@ -28,16 +28,21 @@ def post_data():
     with open(file_name, 'w', encoding='utf-8') as file:
         file.write(data_str)
 
-    # compile the file
+    # copy file to container
+    # docker cp input_file.c container_id:/path/in/container
+
+    # compile code
+    # docker exec -it container_id /path/in/container/compile.sh input_file.c
+    compiler = 'gcc'
+    subprocess.run(['sh','compile.sh', compiler, file_name])
+
+
     if data is not None:
         return jsonify({'message': f'Received file: {data_str}'})
     else:
         return jsonify({'error': 'No file provided'}), 400
 
-
-    
-
-    
+    # basically, gcc file and send to S3
     
 
 if __name__ == '__main__':
