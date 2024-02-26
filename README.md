@@ -1,2 +1,3 @@
 # online-compiler
-simple online compiler, hosted on AWS EC2 instances. Execution is sandboxed via AWS lambda functions.
+simple online code sandbox, hosted on AWS EC2 instances. 
+Execution is sandboxed via AWS lambda functions.

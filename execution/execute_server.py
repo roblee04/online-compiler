@@ -1,3 +1,27 @@
+# AUTHORS: Robin Lee - execute_server.py
+
+# PURPOSE:
+#      To be run on a VM to issue executions of arbritrary code.
+#      AWS Lamdba functions are used for sandboxing.
+
+# SUPPORTED APIs:
+#   1. testing uptime of server via GET
+#   2. Execute code. 
+
+##############################################################################
+
+# USAGE:
+#   curl --data-binary "CODE_AS_STRING" http://YOUR_IP:9870/COMPILER/VERSION
+
+# Example Query
+#   curl --data-binary "@test.c" http://localhost:9870/gcc/13.2.1
+
+# Example Output:
+#   {"message":"Output: Hello, World! Return code: 0 C program executed successfully."}
+
+
+##############################################################################
+
 from flask import Flask, jsonify, request, abort
 import sys
 import json
@@ -5,32 +29,32 @@ import hashlib
 import os
 import execute
 
-# curl -X POST -H "Content-Type: application/json" -d '{"name": "John", "age": 30}' http://localhost:5000/
-# example req
-# curl -X POST -d "data=HelloWorld" http://localhost:5000/
+##############################################################################
+# App Creation
 
 app = Flask(__name__)
 
-# A simple GET endpoint
+##############################################################################
+# A Testing Endpoint
 @app.route('/', methods=['GET'])
 def get_data():
     data = {'message': 'This is a GET request'}
     return jsonify(data)
 
-# A simple POST endpoint
-@app.route('/', methods=['POST'])
-def post_data():
-
+##############################################################################
+# Receive code to executed. args: code, compiler, compiler version
+@app.route('/<compiler>/<version>', methods=['POST'])
+def post_data(compiler: str, version:str):
+    # Take in Code and decode
     data = request.get_data()
     data_str = data.decode('utf-8')
-    print(data_str)
 
     # recalculate hash contents
-    sha256_hash = hashlib.sha256(data_str.encode()).hexdigest()
+    header = compiler + version
+    sha256_hash = hashlib.sha256((data_str + header).encode()).hexdigest()
 
     # get file from S3
 
-    # save string as file
     file_name = sha256_hash
     
     # send to aws lambda function to execute
@@ -41,12 +65,13 @@ def post_data():
     os.remove(file_name)
 
     if data is not None:
-        return jsonify({'message': f'{out}'})
+        return jsonify({'message': f'{out}'}), 200
     else:
         return jsonify({'error': 'No file provided'}), 400
 
-    # basically, gcc file and send to S3
     
+##############################################################################
+# Start the server
 
 if __name__ == '__main__':
     # app.run(debug=True)

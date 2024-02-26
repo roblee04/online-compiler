@@ -1,7 +1,14 @@
-#usage ./compile.sh gcc your_file.c
+# AUTHORS: Robin Lee - compile.sh
+
+# PURPOSE:
+#      Take in arbritary c style compilers and compile code. Afterwards, store code onto AWS S3 bucket.
+
+# USAGE:
+# ./compile.sh gcc your_file.c
+
+##############################################################################
 
 #!/bin/bash
-
 # Check if the correct number of arguments are provided
 if [ "$#" -ne 2 ]; then
     echo "Usage: $0 <compiler> <file>"

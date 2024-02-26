@@ -1,3 +1,26 @@
+# AUTHORS: Robin Lee - compile_server.py
+
+# PURPOSE:
+#      To be run on a VM to issue compilations for various c/c++ compilers.
+#      Route code compilation requests to containers with a specific compiler.
+
+# SUPPORTED APIs:
+#   1. testing uptime of server via GET
+#   2. Compile code. Recieve code and compiler to be used. Route to correct container.
+
+##############################################################################
+
+# USAGE:
+#   curl --data-binary "CODE_AS_STRING" http://YOUR_IP:9000/COMPILER/VERSION
+
+# Example Query
+#   curl --data-binary "@test.c" http://localhost:9000/gcc/13.2.1
+
+# Example Output:
+#   {"message":"Received file: #include <stdio.h>\nint main() {\n   // printf() displays the string inside quotation\n   printf(\"Hello, World!\");\n   return 0;\n}"}
+
+##############################################################################
+
 from flask import Flask, jsonify, request, abort
 import subprocess
 import sys
@@ -5,58 +28,60 @@ import json
 import hashlib
 import os
 
-# curl -X POST -H "Content-Type: application/json" -d '{"name": "John", "age": 30}' http://localhost:5000/
-# example req
-# curl -X POST -d "data=HelloWorld" http://localhost:5000/
-
+##############################################################################
+# App Creation
 app = Flask(__name__)
 
-# A simple GET endpoint
+##############################################################################
+# A Testing Endpoint
 @app.route('/', methods=['GET'])
 def get_data():
     data = {'message': 'This is a GET request'}
     return jsonify(data)
 
-# A simple POST endpoint
-@app.route('/', methods=['POST'])
-def post_data():
-
+##############################################################################
+# Receive code to be compiled. args: code, compiler, compiler version
+@app.route('/<compiler>/<version>', methods=['POST'])
+def post_data(compiler: str, version:str):
+    # Take in Code and decode
     data = request.get_data()
     data_str = data.decode('utf-8')
-    print(data_str)
 
-    extension = ".c"
+    # find extension from compiler
+    cmp_to_ext = {"gcc": ".c", "clang": ".c", "clang++": ".cpp", "g++": ".cpp"}
+
+    extension = cmp_to_ext[compiler]
 
     # hash contents
-    sha256_hash = hashlib.sha256(data_str.encode()).hexdigest()
+    header = compiler + version
+    sha256_hash = hashlib.sha256((data_str + header).encode()).hexdigest()
 
     # save string as c file
     file_name = sha256_hash + extension
-    print(file_name)
     with open(file_name, 'w', encoding='utf-8') as file:
         file.write(data_str)
+
+    # Find correct container
 
     # copy file to container
     # docker cp input_file.c container_id:/path/in/container
 
-    # compile code
+    # compile code to container
     # docker exec -it container_id /path/in/container/compile.sh input_file.c
 
-    compiler = 'gcc'
     subprocess.run(['sh','compile.sh', compiler, file_name])
 
     # after compilation delete the file from local storage
     # os.remove(file_name)
     
-
     if data is not None:
-        return jsonify({'message': f'Received file: {data_str}'})
+        return jsonify({'message': f'Received file: {data_str}'}), 200
     else:
         return jsonify({'error': 'No file provided'}), 400
 
-    # basically, gcc file and send to S3
-    
 
+##############################################################################
+# Start the server
 if __name__ == '__main__':
     # app.run(debug=True)
     # set IPV4 as an environment variable..

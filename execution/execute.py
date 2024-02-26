@@ -1,9 +1,14 @@
+# AUTHORS: Robin Lee - execute.py
+
+# PURPOSE:
+#      Take in arbritary code and execute it.
+#      Placeholder code, until AWS lambda function is done.
+
+##############################################################################
+
 import subprocess
 def execute_c_program(file):
 
-    # download file from S3 Bucket
-    # https://docs.aws.amazon.com/AmazonS3/latest/userguide/download-objects.html
-    # file = sys.argv[1]
     out = ""
     try:
         # execute compiled program
@@ -26,11 +31,11 @@ def execute_c_program(file):
 
         # Check if the process terminated successfully
         if return_code == 0:
-            out +="C program executed successfully."
+            out +="program executed successfully."
         else:
-            out +="C program terminated with an error."
+            out +="program terminated with an error."
 
     except FileNotFoundError:
-        out +="Error: The specified C program does not exist."
+        out +="Error: The specified program does not exist."
 
     return out
