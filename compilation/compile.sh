@@ -16,3 +16,7 @@ $compiler $file_name -o ${file_name%.*}
 
 # also store into S3
 cp ${file_name%.*} ../execution
+
+# after storage, remove files
+rm $file_name
+rm ${file_name%.*}

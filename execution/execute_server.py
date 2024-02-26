@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, request, abort
-import subprocess
 import sys
 import json
 import hashlib
 import os
+import execute
 
 # curl -X POST -H "Content-Type: application/json" -d '{"name": "John", "age": 30}' http://localhost:5000/
 # example req
@@ -25,29 +25,23 @@ def post_data():
     data_str = data.decode('utf-8')
     print(data_str)
 
-    extension = ".c"
-
-    # hash contents
+    # recalculate hash contents
     sha256_hash = hashlib.sha256(data_str.encode()).hexdigest()
 
-    # save string as c file
-    file_name = sha256_hash + extension
-    print(file_name)
-    with open(file_name, 'w', encoding='utf-8') as file:
-        file.write(data_str)
+    # get file from S3
 
-    # copy file to container
-    # docker cp input_file.c container_id:/path/in/container
-
-    # compile code
-    # docker exec -it container_id /path/in/container/compile.sh input_file.c
-
-    compiler = 'gcc'
-    subprocess.run(['sh','compile.sh', compiler, file_name])
+    # save string as file
+    file_name = sha256_hash
     
+    # send to aws lambda function to execute
+    
+    out = execute.execute_c_program(file_name)
+
+    # remove file from local storage
+    os.remove(file_name)
 
     if data is not None:
-        return jsonify({'message': f'Received file: {data_str}'})
+        return jsonify({'message': f'{out}'})
     else:
         return jsonify({'error': 'No file provided'}), 400
 
@@ -59,4 +53,4 @@ if __name__ == '__main__':
     # set IPV4 as an environment variable..
     # export IPV4="YOUR_IP_ADDR"
     ip_addr = os.getenv("IPV4")
-    app.run(host=ip_addr, port=9000)
+    app.run(host=ip_addr, port=9870)
