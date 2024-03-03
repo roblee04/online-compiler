@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online C++ Compiler!</title>
+  <script src="https://cdn.jsdelivr.net/npm/@wasmer/wasi"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@wasmer/cli"></script>
+  <script src="script.js"></script>
+
+
+  <style>
+    #editor {
+      height: 300px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1>C++ Code Sandbox</h1>
+  <textarea id="editor" placeholder="Write your C / C++ code here..."></textarea>
+  <button data-url="/api/compile" onclick="compileCode(this)">Compile</button>
+  <button data-url="/api/run" onclick="runCode(this)">Run</button>
+  <div id="output"></div>
+
+</body>
+</html>
