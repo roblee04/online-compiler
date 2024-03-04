@@ -22,8 +22,10 @@ import requests
 ##############################################################################
 # Environment Variable Declarations
 # export IP="YOUR_IP_ADDR"
-COMPILE_IP = os.getenv("COMPIP")
-EXECUTE_IP = os.getenv("EXECIP")
+# COMPILE_IP = os.getenv("COMPIP")
+COMPILE_IP = "http://127.0.0.1:9000"
+# EXECUTE_IP = os.getenv("EXECIP")
+EXECUTE_IP = "http://127.0.0.1:9870"
 
 ##############################################################################
 # App Creation
@@ -42,30 +44,51 @@ def sandbox():
 def compile():
     data = request.get_json()
     code = data.get('code')
-    print(code)
     
     #   curl --data-binary "@test.c" http://localhost:9870/gcc/13.2.1
     # Perform compilation logic here
-    compiler = "gcc"
-    version = "1.8"
+    compiler, version = data.get('compiler').split()
+    url = f"{COMPILE_IP}/{compiler}/{version}"
 
     # try else exception
-    url = f"{COMPILE_IP}/{compiler}/{version}"
-    req = requests.post(url, code)
-
-    return jsonify({'success': True, 'code': data}), 200
+    try:
+        response = requests.post(url, code)
+        if response.status_code == 200:
+            return jsonify({'success': True, 'code': data}), 200
+        else:
+            raise Exception("Compile Server Error")
+    
+    except Exception as err_msg:
+        return jsonify({'error': err_msg.args[0]}), 400
 
 
 ##############################################################################
 # Send current code as request, see execution result
 @app.route('/api/run', methods=['POST'])
 def run():
+    print(request)
+    data = request.get_json()
+    code = data.get('code')
+
     # Load the compiled binary and execute it
     # Capture the output and return it as a JSON response
-    print("run")
 
-    output = "Your output here"
-    return jsonify({'output': output}), 200
+    compiler, version = data.get('compiler').split()
+    url = f"{EXECUTE_IP}/{compiler}/{version}"
+
+    # try else exception
+    try:
+        response = requests.post(url, code)
+        print(response.json())
+
+        if response.status_code == 200:
+            output = response.json()['message']
+            return jsonify({'output': output}), 200
+        else:
+            raise Exception("Execute Server Error")
+    
+    except Exception as err_msg:
+        return jsonify({'error': err_msg.args[0]}), 400
 
 
 ##############################################################################

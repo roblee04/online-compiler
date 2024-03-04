@@ -20,6 +20,12 @@
 <body>
   <h1>C++ Code Sandbox</h1>
   <textarea id="editor" placeholder="Write your C / C++ code here..."></textarea>
+
+  <select id="compiler-select">
+    <option value="gcc 1.8">GCC</option>
+    <option value="clang 1.9">Clang</option>
+  </select>
+  
   <button data-url="/api/compile" onclick="compileCode(this)">Compile</button>
   <button data-url="/api/run" onclick="runCode(this)">Run</button>
   <div id="output"></div>

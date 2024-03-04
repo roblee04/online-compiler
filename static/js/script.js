@@ -1,12 +1,14 @@
 async function compileCode(element) {
     const code = document.getElementById("editor").value;
+    const compiler = document.getElementById("compiler-select").value;
+    // add compiler + compiler version
     const url = element.dataset.url;
   
     try {
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
+        body: JSON.stringify({ compiler: compiler, code: code }),
       });
   
       if (response.ok) {
@@ -20,10 +22,16 @@ async function compileCode(element) {
   }
   
   async function runCode(element) {
+    const code = document.getElementById("editor").value;
+    const compiler = document.getElementById("compiler-select").value;
     const url = element.dataset.url;
   
     try {
-      const response = await fetch(url, { method: "POST" });
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ compiler: compiler, code: code }),
+      });
   
       if (response.ok) {
         const data = await response.json();
