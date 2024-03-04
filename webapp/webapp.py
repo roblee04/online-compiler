@@ -40,14 +40,20 @@ def sandbox():
 # Send current code as a request to be compiled
 @app.route('/api/compile', methods=['POST'])
 def compile():
-    data = request.get_data()
+    data = request.get_json()
     code = data.get('code')
+    print(code)
     
-
     #   curl --data-binary "@test.c" http://localhost:9870/gcc/13.2.1
     # Perform compilation logic here
+    compiler = "gcc"
+    version = "1.8"
 
-    return jsonify({'success': True, 'code': code}), 400
+    # try else exception
+    url = f"{COMPILE_IP}/{compiler}/{version}"
+    req = requests.post(url, code)
+
+    return jsonify({'success': True, 'code': data}), 200
 
 
 ##############################################################################
@@ -59,7 +65,7 @@ def run():
     print("run")
 
     output = "Your output here"
-    return jsonify({'output': output}), 400
+    return jsonify({'output': output}), 200
 
 
 ##############################################################################
