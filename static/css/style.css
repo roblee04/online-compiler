@@ -1,5 +1,6 @@
 #editor {
-    height: 500px;
+    height: 350px;
+    width: 100%;
 }
 
 .control-panel {
@@ -22,22 +23,21 @@
 .btn {
     padding: 8px;
     border: 0;
+    color: white;
 }
 
 .btn-run {
-    background: #57a958;
-    color: white;
+    background-color: #57a958;
 }
 
 .btn-compile {
-    background: #5245aa;
-    color: white;
+    background-color: #5245aa;
 }
 
 #output {
     padding: 4px;
     border: 2px solid gray;
-    min-height: 100px;
+    min-height: 130px;
     width: 99%;
     resize: none;
 }

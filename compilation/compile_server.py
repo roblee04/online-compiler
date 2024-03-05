@@ -69,15 +69,21 @@ def post_data(compiler: str, version:str):
     # compile code to container
     # docker exec -it container_id /path/in/container/compile.sh input_file.c
 
-    subprocess.run(['sh','compile.sh', compiler, file_name])
+    result = subprocess.run(['sh','compile.sh', compiler, file_name], capture_output=True)
+    stderr_result = result.stderr.decode('utf-8')  # Standard error as a string
 
     # after compilation delete the file from local storage
     # os.remove(file_name)
-    
-    if data is not None:
+
+    if result.returncode == 0:
         return jsonify({'message': f'Received file: {data_str}'}), 200
     else:
-        return jsonify({'error': 'No file provided'}), 400
+        substring = "undefined"
+        start_index = stderr_result.find("error")
+        end_index = stderr_result.find("generated")
+        if start_index != -1 and end_index != -1:
+            substring = stderr_result[start_index:end_index + len("generated")]
+        return jsonify(substring), 400
 
 
 ##############################################################################

@@ -56,10 +56,11 @@ def compile():
         if response.status_code == 200:
             return jsonify({'success': True, 'code': data}), 200
         else:
-            raise Exception("Compile Server Error")
+            #raise Exception("Compile Server Error")
+            raise Exception(response.text)
     
     except Exception as err_msg:
-        return jsonify({'error': err_msg.args[0]}), 400
+        return str(err_msg), 400
 
 
 ##############################################################################

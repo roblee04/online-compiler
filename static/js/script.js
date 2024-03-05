@@ -1,6 +1,6 @@
 async function compileCode(element) {
     // const code = document.getElementById("editor").value;
-    const code = editor.getSession().getValue();
+    const code = editor.getValue();
     const compiler = document.getElementById("compiler-select").value;
     // add compiler + compiler version
     const url = element.dataset.url;
@@ -14,8 +14,12 @@ async function compileCode(element) {
   
       if (response.ok) {
         console.log("Code compiled successfully.");
+        document.getElementById("output").innerText = "Code compiled successfully.";
       } else {
         console.error("Error compiling code.");
+        const data = await response.text();
+        let formattedErrorMessage = data.replace(/\\n/g, '\n');
+        document.getElementById("output").innerText = formattedErrorMessage;
       }
     } catch (error) {
       console.error("Error:", error);
@@ -24,7 +28,7 @@ async function compileCode(element) {
   
   async function runCode(element) {
     // const code = document.getElementById("editor").value;
-    const code = editor.getSession().getValue();
+    const code = editor.getValue();
     const compiler = document.getElementById("compiler-select").value;
     const url = element.dataset.url;
   
