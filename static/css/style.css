@@ -1,0 +1,43 @@
+#editor {
+    height: 500px;
+}
+
+.control-panel {
+    background: lightgray;
+    text-align: right;
+    padding: 4px;
+    font-family: sans-serif;
+  }
+  
+.compiler-select {
+    background: white;
+    border: 1px solid gray;
+}
+
+.button-container {
+    text-align: right;
+    padding: 4px;
+  }
+  
+.btn {
+    padding: 8px;
+    border: 0;
+}
+
+.btn-run {
+    background: #57a958;
+    color: white;
+}
+
+.btn-compile {
+    background: #5245aa;
+    color: white;
+}
+
+#output {
+    padding: 4px;
+    border: 2px solid gray;
+    min-height: 100px;
+    width: 99%;
+    resize: none;
+}

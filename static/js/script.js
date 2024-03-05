@@ -1,5 +1,6 @@
 async function compileCode(element) {
-    const code = document.getElementById("editor").value;
+    // const code = document.getElementById("editor").value;
+    const code = editor.getSession().getValue();
     const compiler = document.getElementById("compiler-select").value;
     // add compiler + compiler version
     const url = element.dataset.url;
@@ -22,7 +23,8 @@ async function compileCode(element) {
   }
   
   async function runCode(element) {
-    const code = document.getElementById("editor").value;
+    // const code = document.getElementById("editor").value;
+    const code = editor.getSession().getValue();
     const compiler = document.getElementById("compiler-select").value;
     const url = element.dataset.url;
   
@@ -43,3 +45,9 @@ async function compileCode(element) {
       console.error("Error:", error);
     }
   }
+
+  window.onload = function () {
+    editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/c_cpp");
+  };

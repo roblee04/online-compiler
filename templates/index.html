@@ -8,8 +8,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@wasmer/cli"></script>
   <link rel="stylesheet" href="../static/css/style.css">
   <script src="../static/js/script.js"></script>
-
-
+  <script src="../static/js/lib/ace.js"></script>
+  <script src="../static/js/lib/theme-monokai.js"></script>
   <style>
     #editor {
       height: 300px;
@@ -19,15 +19,20 @@
 </head>
 <body>
   <h1>C++ Code Sandbox</h1>
-  <textarea id="editor" placeholder="Write your C / C++ code here..."></textarea>
+  <div class="control-panel">
+    Select compiler: &nbsp; &nbsp;
+    <select id="compiler-select" class="compiler-select">
+      <option value="gcc 1.8">GCC</option>
+      <option value="clang 1.9">Clang</option>
+    </select>
+  </div>
 
-  <select id="compiler-select">
-    <option value="gcc 1.8">GCC</option>
-    <option value="clang 1.9">Clang</option>
-  </select>
+  <div class="editor" id="editor"></div>
   
-  <button data-url="/api/compile" onclick="compileCode(this)">Compile</button>
-  <button data-url="/api/run" onclick="runCode(this)">Run</button>
+  <div class="button-container">
+    <button class="btn btn-compile" data-url="/api/compile" onclick="compileCode(this)">Compile</button>
+    <button class="btn btn-run" data-url="/api/run" onclick="runCode(this)">Run</button>
+  </div>
   <div id="output"></div>
 
 </body>
