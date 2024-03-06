@@ -13,7 +13,7 @@ def execute_program(file):
     out = ""
     try:
         # execute compiled program
-        process = subprocess.Popen('./' + file, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(file, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
 
         # Check if there was any output to stdout
@@ -44,11 +44,11 @@ def execute_program(file):
 def lambda_handler(event, context):
     print(json.dumps(event))
     # Specify the S3 bucket name and file key
-    bucket_name = 'codecompiler241'
-    file_key = 'test'
+    bucket_name = 's3-ide-demo'
+    file_key = event["filename"]
     
     # Download the executable from S3 to /tmp
-    local_file_path = '/files/' + file_key
+    local_file_path = '/tmp/' + file_key
     download_file_from_s3(bucket_name, file_key, local_file_path)
     
     # Set the executable file's permissions to allow execution

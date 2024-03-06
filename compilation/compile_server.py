@@ -27,6 +27,7 @@ import sys
 import json
 import hashlib
 import os
+import s3_upload
 
 ##############################################################################
 # App Creation
@@ -76,6 +77,14 @@ def post_data(compiler: str, version:str):
     # os.remove(file_name)
 
     if result.returncode == 0:
+        #uploading the compiled exe to s3 bucket
+        directory_path = "../execution/"
+        file_path = os.path.join(directory_path, sha256_hash)
+        event = {
+            "filename": file_path
+        }
+        uploaded_to_S3 = s3_upload.lambda_handler(event, None)
+        print(uploaded_to_S3)
         return jsonify({'message': f'Received file: {data_str}'}), 200
     else:
         substring = "undefined"

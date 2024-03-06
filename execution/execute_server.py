@@ -28,6 +28,8 @@ import json
 import hashlib
 import os
 import execute
+import lambda_function
+import boto3
 
 ##############################################################################
 # App Creation
@@ -59,13 +61,22 @@ def post_data(compiler: str, version:str):
     
     # send to aws lambda function to execute
     
-    out = execute.execute_c_program(file_name)
+    #out = execute.execute_c_program(file_name)
+
+    event = {
+    "filename": file_name
+    }
+    out = lambda_function.lambda_handler(event, None)
+
+    bucket_name = 's3-ide-demo'
+    s3 = boto3.client('s3')
+    s3.delete_object(Bucket=bucket_name, Key=file_name)
 
     # remove file from local storage
     os.remove(file_name)
 
     if data is not None:
-        return jsonify({'message': f'{out}'}), 200
+        return jsonify({'message': f'{out["body"]}'}), 200
     else:
         return jsonify({'error': 'No file provided'}), 400
 
