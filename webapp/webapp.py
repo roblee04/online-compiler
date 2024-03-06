@@ -67,13 +67,11 @@ def compile():
 # Send current code as request, see execution result
 @app.route('/api/run', methods=['POST'])
 def run():
-    print(request)
     data = request.get_json()
     code = data.get('code')
 
     # Load the compiled binary and execute it
     # Capture the output and return it as a JSON response
-
     compiler, version = data.get('compiler').split()
     url = f"{EXECUTE_IP}/{compiler}/{version}"
 

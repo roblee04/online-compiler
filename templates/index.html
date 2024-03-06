@@ -8,7 +8,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@wasmer/cli"></script>
   <link rel="stylesheet" href="../static/css/style.css">
   
-  <!-- <script src="../static/js/lib/ace.js"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.4.12/src/ace.js"></script>
   <script src="../static/js/lib/theme-monokai.js"></script>
   <script src="../static/js/script.js"></script>
@@ -17,9 +16,14 @@
   <h1>C++ Code Sandbox</h1>
   <div class="control-panel">
     Select compiler: &nbsp; &nbsp;
-    <select id="compiler-select" class="compiler-select">
-      <option value="gcc 1.8">GCC</option>
-      <option value="clang 1.9">Clang</option>
+    <select id="compiler-select" class="compiler-select" onchange="updateVersionDropdown()">
+      <option value="gcc">GCC</option>
+      <option value="clang">Clang</option>
+      <option value="g++">G++</option>
+      <option value="clang++">Clang++</option>
+    </select>
+    <select id="version-select" class="compiler-select">
+      <!-- Options will be dynamically added here based on the selected compiler -->
     </select>
   </div>
 
@@ -27,10 +31,37 @@
 
   <script>
     window.onload = function () {
-    editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/c_cpp");
-  };
+      editor = ace.edit("editor");
+      editor.setTheme("ace/theme/monokai");
+      editor.session.setMode("ace/mode/c_cpp");
+    };
+
+    function updateVersionDropdown() {
+      var compilerSelect = document.getElementById("compiler-select");
+      var versionSelect = document.getElementById("version-select");
+      versionSelect.innerHTML = ""; // Clear existing options
+      
+      if (compilerSelect.value === "gcc") {
+        addOption(versionSelect, "8.1", "GCC 8.1");
+        addOption(versionSelect, "9.1", "GCC 9.1");
+      } else if (compilerSelect.value === "g++") {
+        addOption(versionSelect, "8.2.0", "g++ 8.2.0");
+        addOption(versionSelect, "9.2.3", "g++ 9.2.3");
+      } else if (compilerSelect.value === "clang") {
+        addOption(versionSelect, "10.0", "Clang 10.0");
+        addOption(versionSelect, "11.0", "Clang 11.0");
+      } else if (compilerSelect.value === "clang++") {
+        addOption(versionSelect, "3.4", "Clang++ 3.4");
+        addOption(versionSelect, "6.2", "Clang++ 6.2");
+      }
+    }
+
+    function addOption(select, value, text) {
+      var option = document.createElement("option");
+      option.value = value;
+      option.text = text;
+      select.appendChild(option);
+    }
   </script>
   
   <div class="button-container">

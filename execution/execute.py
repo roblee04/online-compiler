@@ -18,22 +18,22 @@ def execute_c_program(file):
         # Check if there was any output to stdout
         if stdout:
             out += "Output: "
-            out +=stdout.decode('utf-8') + " "
+            out +=stdout.decode('utf-8') + "\n\n"
 
         # Check if there was any output to stderr
         if stderr:
             out +="Error: "
-            out +=stderr.decode('utf-8') + " "
+            out +=stderr.decode('utf-8') + "\n\n"
 
         # Get the return code of the process
         return_code = process.returncode
-        out += f"Return code: {return_code} " 
+        out += f"Return code: {return_code}\n\n" 
 
         # Check if the process terminated successfully
         if return_code == 0:
-            out +="program executed successfully."
+            out +="Program executed successfully."
         else:
-            out +="program terminated with an error."
+            out +="Program terminated with an error."
 
     except FileNotFoundError:
         out +="Error: The specified program does not exist."
