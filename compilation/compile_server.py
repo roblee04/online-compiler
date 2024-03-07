@@ -101,5 +101,5 @@ if __name__ == '__main__':
     # app.run(debug=True)
     # set IPV4 as an environment variable..
     # export IPV4="YOUR_IP_ADDR"
-    ip_addr = os.getenv("IPV4")
-    app.run(host=ip_addr, port=9000)
+    # ip_addr = os.getenv("IPV4")
+    app.run(host="0.0.0.0", port=9000)
