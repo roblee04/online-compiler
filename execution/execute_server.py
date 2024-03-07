@@ -68,7 +68,7 @@ def post_data(compiler: str, version:str):
     }
     out = lambda_function.lambda_handler(event, None)
 
-    bucket_name = 's3-ide-demo'
+    bucket_name = 'online-compiler'
     s3 = boto3.client('s3')
     s3.delete_object(Bucket=bucket_name, Key=file_name)
 
