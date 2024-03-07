@@ -23,7 +23,7 @@ def upload_file(file_name, bucket, object_name=None):
 def lambda_handler(event, context):
     print(json.dumps(event))
     # Specify the S3 bucket name and file name
-    bucket_name = 's3-ide-demo'
+    bucket_name = 'online-compiler'
     file_name = event["filename"]
     print("file_name", file_name)
     
