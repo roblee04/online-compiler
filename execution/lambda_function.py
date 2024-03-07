@@ -44,7 +44,7 @@ def execute_program(file):
 def lambda_handler(event, context):
     print(json.dumps(event))
     # Specify the S3 bucket name and file key
-    bucket_name = 's3-ide-demo'
+    bucket_name = 'online-compiler'
     file_key = event["filename"]
     
     # Download the executable from S3 to /tmp
