@@ -22,7 +22,8 @@ file_name=$2
 $compiler $file_name -o ${file_name%.*}
 
 # also store into S3
-cp ${file_name%.*} ../execution
+# cp ${file_name%.*} ../execution
+python s3_upload.py ${file_name%.*}
 
 # after storage, remove files
 rm $file_name

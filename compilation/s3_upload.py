@@ -1,36 +1,44 @@
+# AUTHORS: Robin Lee - s3_upload.py
+
+# PURPOSE:
+#      To upload the file to an S3 bucket
+
+# USAGE:
+#       python s3_upload.py FILENAME
+
+##############################################################################
 import os
 import boto3
+import sys
 import json
 import logging
 from botocore.exceptions import ClientError
 
-s3 = boto3.client('s3')
 
-def upload_file(file_name, bucket, object_name=None):
-
-    # If S3 object_name was not specified, use file_name
-    if object_name is None:
-        object_name = os.path.basename(file_name)
+##############################################################################
+# helper to upload to s3
+def upload_to_s3(file_name, bucket):
+    object_name = os.path.basename(file_name)
 
     try:
-        response = s3.upload_file(file_name, bucket, object_name)
+        s3.upload_file(file_name, bucket, object_name)
+
     except ClientError as e:
         logging.error(e)
-        return False
-    return True
+        return jsonify({'error': f'{e}'}), 400
+    return jsonify({'success': True}), 200
 
 
-def lambda_handler(event, context):
-    print(json.dumps(event))
-    # Specify the S3 bucket name and file name
-    bucket_name = 's3-ide-demo'
-    file_name = event["filename"]
-    print("file_name", file_name)
+##############################################################################
+# init variables
+def main():
+    s3 = boto3.client('s3')
+    file_name = sys.argv[1]
+    bucket = 'online-compiler'
+    upload_to_s3(file_name, bucket)
+
     
-    result = upload_file(file_name, bucket_name)
-    
-    # Return the output of the executable
-    return {
-        "statusCode": 200,
-        "body": result
-    }
+##############################################################################
+# call main
+if __name__ == '__main__':
+    main()

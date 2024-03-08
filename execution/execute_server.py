@@ -68,7 +68,7 @@ def post_data(compiler: str, version:str):
     }
     out = lambda_function.lambda_handler(event, None)
 
-    bucket_name = 's3-ide-demo'
+    bucket_name = 'online-compiler'
     s3 = boto3.client('s3')
     s3.delete_object(Bucket=bucket_name, Key=file_name)
 
@@ -88,5 +88,5 @@ if __name__ == '__main__':
     # app.run(debug=True)
     # set IPV4 as an environment variable..
     # export IPV4="YOUR_IP_ADDR"
-    ip_addr = os.getenv("IPV4")
-    app.run(host=ip_addr, port=9870)
+    # ip_addr = os.getenv("IPV4")
+    app.run(host="0.0.0.0", port=9870)

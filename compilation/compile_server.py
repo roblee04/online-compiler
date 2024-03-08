@@ -27,7 +27,6 @@ import sys
 import json
 import hashlib
 import os
-import s3_upload
 
 ##############################################################################
 # App Creation
@@ -77,14 +76,6 @@ def post_data(compiler: str, version:str):
     # os.remove(file_name)
 
     if result.returncode == 0:
-        #uploading the compiled exe to s3 bucket
-        directory_path = "../execution/"
-        file_path = os.path.join(directory_path, sha256_hash)
-        event = {
-            "filename": file_path
-        }
-        uploaded_to_S3 = s3_upload.lambda_handler(event, None)
-        print(uploaded_to_S3)
         return jsonify({'message': f'Received file: {data_str}'}), 200
     else:
         substring = "undefined"
@@ -101,5 +92,5 @@ if __name__ == '__main__':
     # app.run(debug=True)
     # set IPV4 as an environment variable..
     # export IPV4="YOUR_IP_ADDR"
-    ip_addr = os.getenv("IPV4")
-    app.run(host=ip_addr, port=9000)
+    # ip_addr = os.getenv("IPV4")
+    app.run(host="0.0.0.0", port=9000)
