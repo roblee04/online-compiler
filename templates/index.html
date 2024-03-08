@@ -11,9 +11,10 @@
   <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.4.12/src/ace.js"></script>
   <script src="../static/js/lib/theme-monokai.js"></script>
   <script src="../static/js/script.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-  <h1>C++ Code Sandbox</h1>
+  <h2>C Code Sandbox</h2>
   <div class="control-panel">
     Select compiler: &nbsp; &nbsp;
     <select id="compiler-select" class="compiler-select" onchange="updateVersionDropdown()">
@@ -25,15 +26,19 @@
     <select id="version-select" class="compiler-select">
       <!-- Options will be dynamically added here based on the selected compiler -->
     </select>
+    <button class="btn btn-compile" data-url="/api/compile" onclick="compileCode(this)">Compile <i class="fa fa-gear"></i></button>
+    <button class="btn btn-run" data-url="/api/run" onclick="runCode(this)">Run <i class="fa fa-play"></i></button>
   </div>
 
   <div class="editor" id="editor"></div>
+  <div id="output"></div>
 
   <script>
     window.onload = function () {
       editor = ace.edit("editor");
       editor.setTheme("ace/theme/monokai");
       editor.session.setMode("ace/mode/c_cpp");
+      updateVersionDropdown();
     };
 
     function updateVersionDropdown() {
@@ -63,12 +68,5 @@
       select.appendChild(option);
     }
   </script>
-  
-  <div class="button-container">
-    <button class="btn btn-compile" data-url="/api/compile" onclick="compileCode(this)">Compile</button>
-    <button class="btn btn-run" data-url="/api/run" onclick="runCode(this)">Run</button>
-  </div>
-  <div id="output"></div>
-
 </body>
 </html>
