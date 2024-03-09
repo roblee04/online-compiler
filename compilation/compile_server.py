@@ -115,13 +115,13 @@ def post_data(compiler: str, version:str):
     os.remove(file_name)
 
     # upload the compiled executable to s3 bucket
-    try:
-        s3_upload.upload(sha256_hash)
-    except Exception as e:
-        # some error
-        # delete executable file
-        os.remove(sha256_hash)
-        return jsonify("S3: " + str(e) + "."), 500
+    # try:
+    #     s3_upload.upload(sha256_hash)
+    # except Exception as e:
+    #     # some error
+    #     # delete executable file
+    #     os.remove(sha256_hash)
+    #     return jsonify("S3: " + str(e) + "."), 500
 
     # after upload remove executable from local storage
     os.remove(sha256_hash)
