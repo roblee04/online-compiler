@@ -20,8 +20,11 @@
     <select id="compiler-select" class="compiler-select" onchange="updateVersionDropdown()">
       <option value="gcc">GCC</option>
       <option value="clang">Clang</option>
+      <option value="icx">Intel® icx</option>
+      <option value="tcc">TinyCC</option>
       <option value="g++">G++</option>
       <option value="clang++">Clang++</option>
+      <option value="icpx">Intel® icpx</option>
     </select>
     <select id="version-select" class="compiler-select">
       <!-- Options will be dynamically added here based on the selected compiler -->
@@ -65,6 +68,8 @@
         addOption(versionSelect, "3.8.0", "Clang++ 3.8.0");
         addOption(versionSelect, "6.0.0", "Clang++ 6.0.0");
         addOption(versionSelect, "10.0.0", "Clang++ 10.0.0");
+      } else {
+        addOption(versionSelect, "latest", "Latest Version");
       }
     }
 
