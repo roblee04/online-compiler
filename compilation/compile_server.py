@@ -54,9 +54,11 @@ def post_data(compiler: str, version:str):
         return jsonify("No source code provided."), 400
 
     # find extension from compiler
-    cmp_to_ext = {"gcc": ".c", "clang": ".c", "clang++": ".cpp", "g++": ".cpp"}
-
-    extension = cmp_to_ext[compiler]
+    cpp_compilers = ["clang++", "g++", "icpx"]
+    if (compiler in cpp_compilers):
+        extension = ".cpp"
+    else:
+        extension = ".c"
 
     # hash contents
     header = compiler + version
@@ -80,7 +82,13 @@ def post_data(compiler: str, version:str):
     volumes.append(script_path + ":/out")
 
     # image names are formatted name:tag
-    image_name = compiler.replace("++", "") + ":" + version
+    compiler_to_image_name = {"gcc": "gcc", "g++": "gcc", "clang": "clang", \
+        "clang++": "clang", "tcc": "tcc", "icx": "oneapi", "icpx": "oneapi"}
+    image_name = compiler_to_image_name[compiler] + ":" + version
+    # need to use full path for intel compilers
+    if (compiler == "icx" or compiler == "icpx"):
+        compiler = "/opt/intel/oneapi/compiler/latest/bin/" + compiler
+
     # get command to run
     cmd = compiler + " file" + extension + " -o /out/" + sha256_hash
     

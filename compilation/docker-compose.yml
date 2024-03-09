@@ -4,19 +4,19 @@ services:
     build:
       dockerfile_inline: |
         FROM ubuntu:16.04
-        RUN apt-get update && apt-get install -y gcc
+        RUN apt-get update && apt-get install -y g++
   gcc-2:
     image: gcc:7.5.0
     build:
       dockerfile_inline: |
         FROM ubuntu:18.04
-        RUN apt-get update && apt-get install -y gcc
+        RUN apt-get update && apt-get install -y g++
   gcc-3:
     image: gcc:9.4.0
     build:
       dockerfile_inline: |
         FROM ubuntu:20.04
-        RUN apt-get update && apt-get install -y gcc
+        RUN apt-get update && apt-get install -y g++
   clang-1:
     image: clang:3.8.0
     build:
@@ -35,3 +35,19 @@ services:
       dockerfile_inline: |
         FROM ubuntu:20.04
         RUN apt-get update && apt-get install -y clang
+  tcc:
+    image: tcc:latest
+    build:
+      dockerfile_inline: |
+        FROM ubuntu:20.04
+        RUN apt-get update && apt-get install -y tcc
+  oneapi:
+    image: oneapi:latest
+    build:
+      dockerfile_inline: |
+        FROM ubuntu:20.04
+        RUN apt-get update && apt-get install -y gnupg wget
+        RUN wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
+        RUN echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list
+        RUN apt-get update && apt-get install -y intel-basekit
+        
