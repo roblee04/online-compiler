@@ -68,12 +68,12 @@ def post_data(compiler: str, version:str):
     }
     out = lambda_function.lambda_handler(event, None)
 
-    bucket_name = 'online-compiler'
+    bucket_name = 's3-ide-demo'
     s3 = boto3.client('s3')
     s3.delete_object(Bucket=bucket_name, Key=file_name)
 
     # remove file from local storage
-    os.remove(file_name)
+    #os.remove(file_name)
 
     if data is not None:
         return jsonify({'message': f'{out["body"]}'}), 200

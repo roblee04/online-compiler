@@ -26,6 +26,8 @@
     <select id="version-select" class="compiler-select">
       <!-- Options will be dynamically added here based on the selected compiler -->
     </select>
+    <!-- Add this button where you want it in your HTML -->
+    <button class="btn btn-clear-editor" onclick="clearEditor()">Clear Editor <i class="fa fa-times"></i></button>
     <button class="btn btn-compile" data-url="/api/compile" onclick="compileCode(this)">Compile <i class="fa fa-gear"></i></button>
     <button class="btn btn-run" data-url="/api/run" onclick="runCode(this)">Run <i class="fa fa-play"></i></button>
   </div>
@@ -66,6 +68,10 @@
       option.value = value;
       option.text = text;
       select.appendChild(option);
+    }
+
+    function clearEditor() {
+      editor.setValue("");
     }
   </script>
 </body>

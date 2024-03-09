@@ -11,13 +11,15 @@ import os
 import boto3
 import sys
 import json
+from flask import jsonify
 import logging
 from botocore.exceptions import ClientError
 
 
 ##############################################################################
 # helper to upload to s3
-def upload_to_s3(file_name, bucket):
+def upload_to_s3(s3, file_name, bucket):
+    
     object_name = os.path.basename(file_name)
 
     try:
@@ -34,8 +36,8 @@ def upload_to_s3(file_name, bucket):
 def main():
     s3 = boto3.client('s3')
     file_name = sys.argv[1]
-    bucket = 'online-compiler'
-    upload_to_s3(file_name, bucket)
+    bucket = 's3-ide-demo'
+    upload_to_s3(s3, file_name, bucket)
 
     
 ##############################################################################
