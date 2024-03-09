@@ -2,7 +2,12 @@ async function compileCode(element) {
   const code = editor.getValue();
   const compiler = document.getElementById("compiler-select").value;
   const version = document.getElementById("version-select").value; // Get selected compiler version
-  const url = element.dataset.url;
+  let url = element.dataset.url;
+  let callRunCode = false;
+  if(url.includes("/run")){
+    url = url.replace("/run", "");
+    callRunCode = true;
+  }
 
   try {
       const response = await fetch(url, {
@@ -13,7 +18,10 @@ async function compileCode(element) {
 
       if (response.ok) {
           console.log("Code compiled successfully.");
-          document.getElementById("output").innerText = "Code compiled successfully.";
+          if(callRunCode)
+            runCode(element);
+          else
+            document.getElementById("output").innerText = "Code compiled successfully.";
       } else {
           console.error("Error compiling code.");
           const data = await response.text();
@@ -30,7 +38,9 @@ async function runCode(element) {
   const code = editor.getValue();
   const compiler = document.getElementById("compiler-select").value;
   const version = document.getElementById("version-select").value; // Get selected compiler version
-  const url = element.dataset.url;
+  let url = element.dataset.url;
+  if(url.includes("/compile"))
+    url = url.replace("/compile", "");
 
   try {
     const response = await fetch(url, {

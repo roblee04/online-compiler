@@ -41,19 +41,21 @@ h2 {
     cursor: pointer;
     border: none;
     border-radius: 4px;
+    color: #fff;
 }
 
 .btn-compile {
     background-color: #4CAF50;
-    color: #fff;
 }
 
 .btn-run {
     background-color: #007BFF;
-    color: #fff;
 }
 
 .btn-clear-editor{
     background-color: red;
-    color: #fff;
+}
+
+.btn-compile-run{
+    background-color: purple;
 }

@@ -7,7 +7,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@wasmer/wasi"></script>
   <script src="https://cdn.jsdelivr.net/npm/@wasmer/cli"></script>
   <link rel="stylesheet" href="../static/css/style.css">
-  
+
   <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.4.12/src/ace.js"></script>
   <script src="../static/js/lib/theme-monokai.js"></script>
   <script src="../static/js/script.js"></script>
@@ -30,6 +30,7 @@
     <button class="btn btn-clear-editor" onclick="clearEditor()">Clear Editor <i class="fa fa-times"></i></button>
     <button class="btn btn-compile" data-url="/api/compile" onclick="compileCode(this)">Compile <i class="fa fa-gear"></i></button>
     <button class="btn btn-run" data-url="/api/run" onclick="runCode(this)">Run <i class="fa fa-play"></i></button>
+    <button class="btn btn-compile-run" data-url="/api/compile/run" onclick="compileCode(this)">Compile + Run <i class="fa fa-code"></i></button>
   </div>
 
   <div class="editor" id="editor"></div>
