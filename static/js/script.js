@@ -23,10 +23,22 @@ async function compileCode(element) {
           else
             document.getElementById("output").innerText = "Code compiled successfully.";
       } else {
-          console.error("Error compiling code.");
           const data = await response.text();
-          let formattedErrorMessage = data.replace(/\\n/g, '\n');
-          document.getElementById("output").innerText = formattedErrorMessage;
+          console.log(data);
+          if (data.includes("500 Internal Server Error")) {
+            console.error("Server error.");
+            document.getElementById("output").innerText = "Server error.";
+          }
+          else {
+            console.error("Error compiling code.");
+            // fix whitespace
+            let formattedErrorMessage = data.replace(/\s/g, "\u00A0");
+            // fix backslashes and newlines
+            formattedErrorMessage = formattedErrorMessage.replace(/(?<!\\)\\n/g, "\n").replace(/(?<!\\)\\/g, "");
+            // remove leading and trailing quotation marks
+            formattedErrorMessage = formattedErrorMessage.slice(1, -2);
+            document.getElementById("output").innerText = formattedErrorMessage;
+          }
       }
   } catch (error) {
       console.error("Error:", error);
