@@ -41,7 +41,7 @@
       editor = ace.edit("editor");
       editor.setTheme("ace/theme/monokai");
       editor.session.setMode("ace/mode/c_cpp");
-      updateVersionDropdown();
+      updateVersionDropdown(); // populate dropdown on load
     };
 
     function updateVersionDropdown() {
@@ -50,17 +50,21 @@
       versionSelect.innerHTML = ""; // Clear existing options
       
       if (compilerSelect.value === "gcc") {
-        addOption(versionSelect, "8.1", "GCC 8.1");
-        addOption(versionSelect, "9.1", "GCC 9.1");
+        addOption(versionSelect, "5.4.0", "GCC 5.4.0");
+        addOption(versionSelect, "7.5.0", "GCC 7.5.0");
+        addOption(versionSelect, "9.4.0", "GCC 9.4.0");
       } else if (compilerSelect.value === "g++") {
-        addOption(versionSelect, "8.2.0", "g++ 8.2.0");
-        addOption(versionSelect, "9.2.3", "g++ 9.2.3");
+        addOption(versionSelect, "5.4.0", "G++ 5.4.0");
+        addOption(versionSelect, "7.5.0", "G++ 7.5.0");
+        addOption(versionSelect, "9.4.0", "G++ 9.4.0");
       } else if (compilerSelect.value === "clang") {
-        addOption(versionSelect, "10.0", "Clang 10.0");
-        addOption(versionSelect, "11.0", "Clang 11.0");
+        addOption(versionSelect, "3.8.0", "Clang 3.8.0");
+        addOption(versionSelect, "6.0.0", "Clang 6.0.0");
+        addOption(versionSelect, "10.0.0", "Clang 10.0.0");
       } else if (compilerSelect.value === "clang++") {
-        addOption(versionSelect, "3.4", "Clang++ 3.4");
-        addOption(versionSelect, "6.2", "Clang++ 6.2");
+        addOption(versionSelect, "3.8.0", "Clang++ 3.8.0");
+        addOption(versionSelect, "6.0.0", "Clang++ 6.0.0");
+        addOption(versionSelect, "10.0.0", "Clang++ 10.0.0");
       }
     }
 
