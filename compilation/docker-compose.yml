@@ -1,0 +1,37 @@
+services:
+  gcc-1:
+    image: gcc:5.4.0
+    build:
+      dockerfile_inline: |
+        FROM ubuntu:16.04
+        RUN apt-get update && apt-get install -y gcc
+  gcc-2:
+    image: gcc:7.5.0
+    build:
+      dockerfile_inline: |
+        FROM ubuntu:18.04
+        RUN apt-get update && apt-get install -y gcc
+  gcc-3:
+    image: gcc:9.4.0
+    build:
+      dockerfile_inline: |
+        FROM ubuntu:20.04
+        RUN apt-get update && apt-get install -y gcc
+  clang-1:
+    image: clang:3.8.0
+    build:
+      dockerfile_inline: |
+        FROM ubuntu:16.04
+        RUN apt-get update && apt-get install -y clang
+  clang-2:
+    image: clang:6.0.0
+    build:
+      dockerfile_inline: |
+        FROM ubuntu:18.04
+        RUN apt-get update && apt-get install -y clang
+  clang-3:
+    image: clang:10.0.0
+    build:
+      dockerfile_inline: |
+        FROM ubuntu:20.04
+        RUN apt-get update && apt-get install -y clang
