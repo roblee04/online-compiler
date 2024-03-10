@@ -27,7 +27,7 @@ import sys
 import json
 import hashlib
 import os
-import execute
+import requests
 import lambda_function
 import boto3
 
@@ -66,14 +66,15 @@ def post_data(compiler: str, version:str):
     event = {
     "filename": file_name
     }
-    out = lambda_function.lambda_handler(event, None)
 
-    bucket_name = 's3-ide-demo'
-    s3 = boto3.client('s3')
-    s3.delete_object(Bucket=bucket_name, Key=file_name)
+    url = 'https://2eqem3g5t43xm35cnfe4yzbm4u0qcydf.lambda-url.us-west-1.on.aws/'
+    headers = {'Content-Type': 'application/json'}
 
-    # remove file from local storage
-    #os.remove(file_name)
+    out = requests.post(url, json=event, headers=headers)
+    # print(out.text)
+
+    # out = lambda_function.lambda_handler(event, None)
+
 
     if data is not None:
         return jsonify({'message': f'{out["body"]}'}), 200

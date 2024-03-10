@@ -1,4 +1,4 @@
-# AUTHORS: Robin Lee - compile_server.py
+# AUTHORS: Robin Lee, Nolan Anderson - compile_server.py
 
 # PURPOSE:
 #      To be run on a VM to issue compilations for various c/c++ compilers.

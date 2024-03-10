@@ -20,7 +20,7 @@ from botocore.exceptions import ClientError
 # helper to upload to s3
 def upload(file_name):
     s3 = boto3.client('s3')
-    bucket = "s3-id3-demo"
+    bucket = "codecompiler241"
     
     object_name = os.path.basename(file_name)
 

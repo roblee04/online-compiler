@@ -22,10 +22,10 @@ import requests
 ##############################################################################
 # Environment Variable Declarations
 # export IP="YOUR_IP_ADDR"
-# COMPILE_IP = os.getenv("COMPIP")
-COMPILE_IP = "http://127.0.0.1:9000"
-# EXECUTE_IP = os.getenv("EXECIP")
-EXECUTE_IP = "http://127.0.0.1:9870"
+COMPILE_IP = os.getenv("COMPIP")
+# COMPILE_IP = "http://127.0.0.1:9000"
+EXECUTE_IP = os.getenv("EXECIP")
+# EXECUTE_IP = "http://127.0.0.1:9870"
 
 ##############################################################################
 # App Creation
