@@ -60,18 +60,27 @@ def post_data(compiler: str, version:str):
     file_name = sha256_hash
     
     # send to aws lambda function to execute
-    
-    #out = execute.execute_c_program(file_name)
 
-    event = {
+    # Create a Lambda client
+    lambda_client = boto3.client('lambda', region_name='us-west-1')  # Specify your region
+
+    # Define the Lambda function name or ARN
+    function_name = 'execute_code'
+
+    # Define the payload you want to send to your Lambda function
+    payload = {
     "filename": file_name
     }
 
-    url = 'https://2eqem3g5t43xm35cnfe4yzbm4u0qcydf.lambda-url.us-west-1.on.aws/'
-    headers = {'Content-Type': 'application/json'}
+    # Invoke the Lambda function
+    response = lambda_client.invoke(
+        FunctionName=function_name,
+        InvocationType='RequestResponse',  # Use 'Event' for asynchronous execution
+        Payload=json.dumps(payload),
+    )
 
-    out = requests.post(url, json=event, headers=headers)
-    # print(out.text)
+    out = response['Payload'].read().decode("utf-8")
+
 
     # out = lambda_function.lambda_handler(event, None)
 
