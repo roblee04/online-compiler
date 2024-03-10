@@ -19,16 +19,16 @@ def execute_program(file):
         # Check if there was any output to stdout
         if stdout:
             out += "Output: "
-            out +=stdout.decode('utf-8') + " "
+            out +=stdout.decode('utf-8') + "\n\n"
 
         # Check if there was any output to stderr
         if stderr:
             out +="Error: "
-            out +=stderr.decode('utf-8') + " "
+            out +=stderr.decode('utf-8') + "\n\n"
 
         # Get the return code of the process
         return_code = process.returncode
-        out += f"Return code: {return_code} " 
+        out += f"Return code: {return_code}\n\n" 
 
         # Check if the process terminated successfully
         if return_code == 0:
@@ -42,11 +42,10 @@ def execute_program(file):
     return out
 
 def lambda_handler(event, context):
-    print(json.dumps(event))
+    # print(json.dumps(event))
     # Specify the S3 bucket name and file key
-    bucket_name = 's3-ide-demo'
+    bucket_name = 'codecompiler241'
     file_key = event["filename"]
-    
     # Download the executable from S3 to /tmp
     local_file_path = '/tmp/' + file_key
     download_file_from_s3(bucket_name, file_key, local_file_path)

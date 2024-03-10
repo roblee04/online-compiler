@@ -79,8 +79,8 @@ def post_data(compiler: str, version:str):
         Payload=json.dumps(payload),
     )
 
-    out = response['Payload'].read().decode("utf-8")
-
+    res = response['Payload'].read().decode("utf-8")
+    out = json.loads(res)
 
     # out = lambda_function.lambda_handler(event, None)
 
