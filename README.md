@@ -35,36 +35,41 @@ Make sure that EC2s have some exposed ports and can be accessed by all TCP (0.0.
 Assuming EC2's with Amazon Linux...
 
 ## Web Server:
-sudo yum install python-pip \
+```bash
+sudo yum install python-pip 
 git clone https://github.com/roblee04/online-compiler
 
 
-cd online-compiler \
+cd online-compiler 
 pip install -r requirements.txt
 
-cd webapp \
-export COMPIP="http://COMPILEIP:PORT" \
+cd webapp 
+export COMPIP="http://COMPILEIP:PORT" 
 export EXECIP="http://EXECUTEIP:PORT"
 
 python3 webapp.py
+```
 
 ## Compilation VM:
-sudo yum install python-pip \
+
+```bash
+sudo yum install python-pip 
 git clone https://github.com/roblee04/online-compiler
 
-#### install Docker and Docker-Compose
-sudo yum update -y \
-sudo amazon-linux-extras install docker \
-sudo yum install docker \
-sudo service docker start \ 
-sudo usermod -a -G docker ec2-user \
+# install Docker and Docker-Compose
+sudo yum update -y 
+sudo amazon-linux-extras install docker 
+sudo yum install docker 
+sudo service docker start  
+sudo usermod -a -G docker ec2-user 
 docker info
 
-sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose \
-sudo chmod +x /usr/local/bin/docker-compose \
+sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose 
+
+sudo chmod +x /usr/local/bin/docker-compose 
 docker-compose version
 
-#### setup aws iam for S3, user and pass
+# setup aws iam for S3, user and pass
 aws configure
 
 cd online-compiler \
@@ -73,22 +78,25 @@ pip install -r requirements.txt \
 cd compilation \
 docker-compose build \
 python3 compile_server.py
+```
 
 ## Execution VM:
 
 
+```bash 
 sudo yum install python-pip 
 
 git clone https://github.com/roblee04/online-compiler
 
-#### setup aws iam for S3 \
+# setup aws iam for S3 
 aws configure
 
-cd online-compiler \
+cd online-compiler 
 pip install -r requirements.txt
 
-cd execution \
+cd execution 
 python3 execute_server.py
+```
 
 ## Setup AWS Lambda function
 Assuming AWS console setup.
